@@ -270,7 +270,7 @@ class SSD1331:
         self.spi = spidev.SpiDev()
         self.spi.open(0, 0)
         self.spi.mode = 3
-        self.spi.max_speed_hz = 6000000
+        self.spi.max_speed_hz = 16000000
         self.spi.cshigh = False
         return
 
