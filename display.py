@@ -23,6 +23,7 @@ def currtemp():
 if __name__ == "__main__":
     device = SSD1331(SSD1331_PIN_DC, SSD1331_PIN_RST, SSD1331_PIN_CS)
     GPIO.setup(17, GPIO.IN)
+    GPIO.setup(18, GPIO.OUT)
     try:
         while 1:
             temps = currtemp()
@@ -33,8 +34,10 @@ if __name__ == "__main__":
 
             if GPIO.input(17):
                 device.DrawStringBg(0, y, "Button on", COLOR_WHITE, COLOR_BLUE)
+                GPIO.output(18, 1)
             else:
                 device.DrawStringBg(0, y, "Button off", COLOR_WHITE, COLOR_BLUE)
+                GPIO.output(18, 0)
                     
     finally:
         device.Remove()
