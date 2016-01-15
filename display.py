@@ -2,6 +2,7 @@
 
 from SSD1331 import *
 import glob
+import RPi.GPIO as GPIO
 
 def currtemp():
     device_paths = glob.glob('/sys/bus/w1/devices/28*')
@@ -21,13 +22,20 @@ def currtemp():
                 
 if __name__ == "__main__":
     device = SSD1331(SSD1331_PIN_DC, SSD1331_PIN_RST, SSD1331_PIN_CS)
+    GPIO.setup(17, GPIO.IN)
     try:
         while 1:
             temps = currtemp()
             y = 0
             for idx, temp in enumerate(temps):
-                device.DrawString(0, y, "Sensor " + str(idx) + ": " + str(temp))
+                device.DrawStringBg(0, y, "Sensor " + str(idx) + ": " + str(temp), COLOR_WHITE, COLOR_RED)
                 y += 10
+
+            if GPIO.input(17):
+                device.DrawStringBg(0, y, "Button on", COLOR_WHITE, COLOR_BLUE)
+            else:
+                device.DrawStringBg(0, y, "Button off", COLOR_WHITE, COLOR_BLUE)
+                    
     finally:
         device.Remove()
 
